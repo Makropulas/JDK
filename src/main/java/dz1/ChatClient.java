@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.util.Arrays;
 
 public class ChatClient extends JFrame {
     private static final Dimension displaySize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -71,7 +72,12 @@ public class ChatClient extends JFrame {
                     || txtFieldIP.getText().isEmpty() || txtFieldPort.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this,
                         "Не все поля заполнены", "ВХОД НЕ ВЫПОЛНЕН", JOptionPane.WARNING_MESSAGE);
-            } else downloadLog();
+            } else {
+                if (Arrays.stream(users).noneMatch(user -> user.login().equals(txtFieldLogin.getText()))) {
+                    activeUserName = txtFieldLogin.getText();
+                }
+                downloadLog();
+            }
         });
         txtFieldMessage.addActionListener(e -> sendMessage());
         btnSend.addActionListener(e -> sendMessage());
@@ -142,6 +148,7 @@ public class ChatClient extends JFrame {
         public String toString() {
             return name;
         }
+
     }
 }
 
